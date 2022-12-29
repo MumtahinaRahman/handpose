@@ -8,6 +8,10 @@ import { drawHand } from "./utilities";
 //importing custom gesture
 import {one} from "./One.jsx";
 
+//importing emojis
+import {thumbs_up} from "./thumbs_up.png";
+import {victory} from "./victory.png";
+
 
 function App() {
   const webcamRef = useRef(null);
@@ -52,21 +56,21 @@ function App() {
 
       if(hand.length > 0){
         const GE = new fp.GestureEstimator([
-          // fp.Gestures.VictoryGesture,
-          // fp.Gestures.ThumbsUpGesture,
+          fp.Gestures.VictoryGesture,
+          fp.Gestures.ThumbsUpGesture,
           one,
         ]);
 
         const gesture = await GE.estimate(hand[0].landmarks, 8);
-        console.log(gesture.gestures);
+        // console.log(gesture.gestures);
 
         if (gesture.gestures !== undefined && gesture.gestures.length > 0){
           const confidence = gesture.gestures.map((prediction) => prediction.score);
           const maxConfidence = confidence.indexOf(Math.max.apply(null, confidence));
-          //setEmoji(gesture.gestures[maxConfidence].name);
-          var emoji = gesture.gestures[maxConfidence].name;
+          setEmoji(gesture.gestures[maxConfidence].name);
+          // var emoji = gesture.gestures[maxConfidence].name;
           console.log("index: ", maxConfidence);
-          console.log("confidence: ", confidence);
+          //console.log("confidence: ", confidence);
           console.log(emoji);
         }
       }
@@ -112,11 +116,33 @@ function App() {
             width: 640,
             height: 480,
           }}
-
-          //{{detect()}}
-          //  <h3>{emojis[emoji]}</h3>
-
         />
+
+        {/* {emoji !== null ? <img src={emojis[emoji]} style={{
+          zindex: 20,
+          position: "absolute",
+          left: 400,
+          bottom: 500,
+          right: 0,
+          testAlign: "center",
+          color: "white",
+          height: 100,
+          width: 100
+          }} alt={emoji}/> : " "} */}
+
+          {emoji !== null ? <h1 style={{
+          zindex: 20,
+          position: "absolute",
+          left: 360,
+          bottom: 500,
+          top: 120,
+          right: 0,
+          testAlign: "center",
+          color: "black",
+          height: 100,
+          width: 100
+          }} > {emoji} </h1> : ""}
+
       </header>
     </div>
   );
